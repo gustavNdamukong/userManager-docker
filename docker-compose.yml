@@ -1,0 +1,25 @@
+  version: '3' # docker version
+  services:
+    www:
+      image: php:apache
+      volumes:
+        - "./:/var/www/html" # sync this project dir (./) with container web dir
+      ports:
+        - 80:80
+        - 443:443 # for future SSL traffic
+    db:
+      image: mysql:latest
+      environment:
+        - MYSQL_DATABASE=housing
+        - MYSQL_USER=php_docker
+        - MYSQL_PASSWORD=password # this should live in the env var
+        - MYSQL_ALLOW_EMPTY_PASSWORD=0 # equivalent to false (set it to 1 to allow login with no password)
+      volumes:
+        - "./db:/docker-entrypoint-initdb.d" # sync & persist your backed-up sql file (in the '/db' dir) with the data in the db container
+    phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      ports:
+        - 8001:80
+      environment:
+        - PMA_HOST=db
+        - pma_port=3306
