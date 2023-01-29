@@ -12,9 +12,6 @@ $lastname = $_SESSION['postBack']['last_name'] ?? '';
 $username = $_SESSION['postBack']['username'] ?? '';
 $phone = $_SESSION['postBack']['contact_tel'] ?? '';
 $email = $_SESSION['postBack']['email'] ?? '';
-
-//echo '<pre>';
-//die(print_r($_SESSION['postBack']));
 ?>
 
 <!DOCTYPE HTML>
@@ -204,48 +201,6 @@ $email = $_SESSION['postBack']['email'] ?? '';
                                                             </div>
 
                                                             <div class="panel-body">
-
-                                                                 <!-------------------SOCIAL SIGN UP-------------------->
-                                                                 <!--<div class="social_sign">-->
-                                                                      <?php /* <a class="btn btn-primary col-md-6 form-control"
-                                                                         style="background-color:#3B5998;border-radius:5px;"
-                                                                         href="<?= $facebook_login_url?>">
-                                                                           Sign up with Facebook <i class="fa fa-facebook"></i>
-                                                                      </a> */ ?>
-
-                                                                      <!--<div class="fb-login-button"
-                                                                           scope="public_profile,email"
-                                                                           data-width="" data-size="large"
-                                                                           data-button-type="login_with"
-                                                                           data-layout="default"
-                                                                           data-auto-logout-link="false"
-                                                                           data-use-continue-as="false"
-                                                                           onlogin="checkLoginState();">
-                                                                      </div>-->
-
-                                                                      <!--<a class="tw" href="#twitter">
-                                                                          <i class="fa fa-twitter"></i>
-                                                                      </a>-->
-
-                                                                      <!--  GOOGLE SIGNUP -->
-
-                                                                    <?php /*  <a class="btn btn-primary col-md-6 form-control"
-                                                                         style="background-color:#F03F3A;color:#fff;border-radius:5px;"
-                                                                         href="#"
-                                                                         onclick="window.location = '<?= $googleLoginUrl ?>'">
-                                                                           <?= $langClass->translate($lang, 'register.php', 'register-signUpViaGoogle') ?>
-                                                                           <i class="fa fa-google"></i>
-                                                                      </a>
-                                                                 </div>
-
-                                                                 <div class="or">
-                                                                      <div class="or_l"></div>
-                                                                      <span><?= $langClass->translate($lang, 'register.php', 'register-or') ?>
-                                                                           <small><?= $langClass->translate($lang, 'register.php', 'register-signUpToCamcom') ?></small></span>
-                                                                      <div class="or_r"></div>
-                                                                 </div> */ ?>
-                                                                 <!--------------------END SOCIAL SIGN IN--------------->
-
                                                                  <p>
                                                                       <label for="firstname">Enter your first name</label>
                                                                       <input type="text" class="form-control regisforminput"
@@ -306,7 +261,7 @@ $email = $_SESSION['postBack']['email'] ?? '';
                                                                         name="phone"
                                                                         placeholder="Phone number"
                                                                         id="phone"
-                                                                        value="<?=$phone?>"
+                                                                        value="<?=htmlentities($phone, ENT_COMPAT, 'UTF-8')?>"
                                                                       />
                                                                  </p>
                                                                  <hr/>
@@ -317,7 +272,7 @@ $email = $_SESSION['postBack']['email'] ?? '';
                                                                         maxlength="64"
                                                                         name="email"
                                                                         placeholder="Email"
-                                                                        id="email" value="<?=$email?>"/>
+                                                                        id="email" value="<?=htmlentities($email, ENT_COMPAT, 'UTF-8')?>"/>
                                                                  </p>
                                                                  <hr/>
 
