@@ -2,7 +2,7 @@
 namespace classes;
 
 use classes\Model;
-use classes\Offers;
+
 if(file_exists("../autoloader.php")) {
     include_once "../autoloader.php";
 }

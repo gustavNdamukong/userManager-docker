@@ -29,10 +29,38 @@ session_start();
 		<?php include_once("includes/header.inc.php"); ?>
 	</section>
 	<div id="dataContent">
+        <?php
+        if ((isset($_GET['rs'])) && ($_GET['rs'] == '1')) //registration was successful.
+        {
+            echo "<p style='color: white; background-color: seagreen;font-weight:bold;margin-left:30%;'>
+                    Your registration was successful
+                  </p>";
+        }
+        ?>
 		<h2>Welcome to your user manager</h2>
 		<p>Manage your users' account details</p>
 		<p>Create accounts, update or delete them when you so desire </p>
 		<p>Login to get started</p>
+
+        <?php
+        if ((isset($_GET['rs'])) && ($_GET['rs'] == '1')) //registration was successful.
+        { ?>
+            <div style='color: white; background-color: seagreen;font-weight:bold;width:100%;'>
+                <p>
+                    Thank You for registering with us. We have just sent you an email to
+                    your email address with a link to activate your account
+                </p>
+                <p>
+                    If you cannot find the email, check in your SPAM folder, it may be in there
+                    The activation link is valid for 24 hours. We look forward to seeing you online.
+                </p>
+                <p>
+                    In case of any problems, feel free to
+                    contact us and we will be happy to help.
+                </p>
+            </div>
+        <?php
+        } ?>
 	</div>
 	<article id="footer">
 		<?php include_once("includes/footer.inc.php"); ?>

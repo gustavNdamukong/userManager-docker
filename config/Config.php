@@ -27,6 +27,7 @@ class Config
             'localDBcredentials' => [
                 'username' => 'php_docker',
                 'pwd' => 'password',
+                //'db' => 'userManager', # MUST be same as Dockerfile db service
                 'db' => 'housing', # MUST be same as Dockerfile db service
                 'host' => 'db',
                 'key' => 'takeThisWith@PinchOfSalt'
@@ -38,7 +39,24 @@ class Config
             |--------------------------------------------------------------------------
              */
 
-            'allow_registration' => true
+            'allow_registration' => false,
+
+
+            /**
+            |--------------------------------------------------------------------------
+            | Email config data
+            |--------------------------------------------------------------------------
+             */
+
+            'appName' => 'UserManager', //your app name here
+
+            'appEmail' => 'yourEmail@yourDomain.com',
+
+            'headerFrom' => 'yourEmail@yourDomain.com',
+
+            'headerReply-To' => 'yourEmail@yourDomain.com',
+
+            'appURL' => 'https://yourWebsite@yourDomain.com'
         ];
     }
 }

@@ -13,7 +13,7 @@ use config\Config;
 use mysqli;
 use Exception;
 
-
+#[AllowDynamicProperties]
 class Model
 {
     protected $config;
@@ -592,7 +592,6 @@ class Model
         list( $fields, $placeholders, $values ) = $this->insert_update_prep_query($dataClean);
         array_unshift($values, $datatypes);
 
-
         $stmt = $db->stmt_init();
 
         $stmt->prepare("INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})");
@@ -955,7 +954,8 @@ class Model
 
         $sql = "SELECT * FROM ".$this->getTable()." 
             WHERE ".$usernameField." = ? 
-            AND ".$passwordField." = AES_ENCRYPT(?, ?)";
+            AND ".$passwordField." = AES_ENCRYPT(?, ?)
+            AND users_emailverified = 'yes'";
 
         $stmt = $connect->stmt_init();
         $stmt->prepare($sql);

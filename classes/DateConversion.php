@@ -4,7 +4,7 @@ namespace classes;
 /**
  * Contains functions for converting between the various representations of dates
  *
- * @author Gustav
+ * @author Gustav Ndamukong
  */
 class DateConversion
 {

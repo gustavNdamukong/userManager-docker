@@ -1,12 +1,17 @@
 <?php
 
+use classes\Messenger;
+use config\Config;
+
 require_once('./includes/authenticate.inc.php');
 include_once "autoloader.php";
 
 $validator = new classes\Validator();
 $user = new classes\Users;
+$config = new Config();
+$messenger = new Messenger();
 $user->setValidator($validator);
-$adminController = new classes\adminController($validator, $user);
+$adminController = new classes\adminController($validator, $user, $config, $messenger);
 
 //only admin users allowed here
 if ($_SESSION['user_type'] != 'admin')

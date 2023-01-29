@@ -1,3 +1,9 @@
+<?php
+
+include_once "autoloader.php";
+?>
+
+
 <!DOCTYPE HTML>
 <html lang="en-gb">
 <head>
@@ -32,12 +38,25 @@
                         <?php
                         if ((isset($_GET['lg'])) && ($_GET['lg'] == 0)) //these are errors coming from grabbing the login details from the db.
                         {
-                            echo "<p style='color: red; background-color: white;margin-left:30%;'>There was an error, check you details and try again</p>";
-                        } ?>
+                            echo "<p style='color: red; background-color: white;margin-left:30%;'>There was an error, check your details and try again</p>";
+                        }
+                        if ((isset($_GET['ev'])) && ($_GET['ev'] == 1)) //email verified-the user's email was verified
+                        {
+                            echo "<p style='color: white; background-color: seagreen;margin-left:30%;'>Great! Your email was successfully activated. You may now login</p>";
+                        }
+                        if ((isset($_GET['ev'])) && ($_GET['ev'] == 0)) //email NOT verified-the user's email was not verified
+                        {
+                            echo "<p style='color: red; background-color: white;margin-left:30%;'>Sorry! Your email could not be verified. Please contact us for help</p>";
+                        }
+                        if ((isset($_GET['dt'])) && ($_GET['dt'] == 0)) //the user's details were not be found
+                        {
+                            echo "<p style='color: red; background-color: white;margin-left:30%;'>Sorry! We could not find your details. Contact us for help</p>";
+                        }
+                        ?>
 
                         <div class="col-lg-2"></div>
                         <div class="form col-lg-8">
-                            <form action="classes/adminController.php" method="post">
+                            <form action="classes/adminController.php?lg=1" method="post">
                                 <input placeholder="Username" name="username" class="form-control" type="text" />
                                 <input placeholder="Password" name="login_pwd" class="form-control" type="password">
                                 <div class="forgot">

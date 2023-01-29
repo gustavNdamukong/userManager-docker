@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jan 23, 2023 at 05:58 PM
+-- Generation Time: Jan 28, 2023 at 08:42 AM
 -- Server version: 8.0.32
 -- PHP Version: 8.0.19
 
@@ -152,22 +152,33 @@ INSERT INTO `products` (`product_id`, `product_code`, `product_name`, `product_p
 CREATE TABLE IF NOT EXISTS `users` (
   `users_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `users_type` enum('member','admin') CHARACTER SET utf8mb3 COLLATE utf8mb3_swedish_ci NOT NULL,
+  `users_first_name` varchar(20) COLLATE utf8mb3_swedish_ci NOT NULL,
+  `users_last_name` varchar(20) COLLATE utf8mb3_swedish_ci NOT NULL,
   `users_username` varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_swedish_ci NOT NULL,
+  `users_phone_number` varchar(15) CHARACTER SET utf8mb3 COLLATE utf8mb3_swedish_ci DEFAULT NULL,
+  `users_email` varchar(30) COLLATE utf8mb3_swedish_ci NOT NULL,
   `users_pass` blob NOT NULL,
+  `users_emailverified` enum('no','yes') CHARACTER SET utf8mb3 COLLATE utf8mb3_swedish_ci NOT NULL DEFAULT 'no',
+  `users_authorized` enum('0','1') COLLATE utf8mb3_swedish_ci NOT NULL DEFAULT '0',
+  `users_eactivationcode` varchar(100) COLLATE utf8mb3_swedish_ci DEFAULT NULL,
   `users_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `users_created` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`users_id`),
-  UNIQUE KEY `username` (`users_username`),
-  UNIQUE KEY `username_2` (`users_username`)
+  UNIQUE KEY `username` (`users_username`,`users_email`),
+  UNIQUE KEY `username_2` (`users_username`),
+  UNIQUE KEY `email` (`users_email`),
+  KEY `emailverify` (`users_emailverified`),
+  KEY `phone_number` (`users_phone_number`),
+  KEY `eactivationcode` (`users_eactivationcode`),
 ) ENGINE=MyISAM AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_swedish_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`users_id`, `users_type`, `users_username`, `users_pass`, `users_updated`, `users_created`) VALUES
-(1, 'admin', 'fritz', 0xc8cde018de3e91d82112fce52b853412, '2021-01-29 11:01:45', '2023-01-23 17:23:41.247104'),
-(2, 'member', 'john', 0xc8cde018de3e91d82112fce52b853412, '2023-01-23 17:03:15', '2023-01-23 17:23:41.247104');
+INSERT INTO `users` (`users_id`, `users_type`, `users_first_name`, `users_last_name`, `users_username`, `users_phone_number`, `users_email`, `users_pass`, `users_emailverified`, `users_authorized`, `users_eactivationcode`, `users_updated`, `users_created`) VALUES
+(1, 'admin', '', '', 'fritz', NULL, '', 0xc8cde018de3e91d82112fce52b853412, 'no', '0', NULL, '2021-01-29 11:01:45', '2023-01-23 17:23:41.247104'),
+(2, 'member', '', '', 'john', NULL, '', 0xc8cde018de3e91d82112fce52b853412, 'no', '0', NULL, '2023-01-23 17:03:15', '2023-01-23 17:23:41.247104');
 
 -- --------------------------------------------------------
 
