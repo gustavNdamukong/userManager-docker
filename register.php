@@ -41,116 +41,10 @@ $email = $_SESSION['postBack']['email'] ?? '';
     </section>
 
                <div class="main">
-
-                    <!-- ==========================
-                        MY ACCOUNT - START
-                    =========================== -->
                     <section class="content account">
                          <div class="container">
                               <div class="row">
-                                   <!--<div class="col-sm-3">-->
                                         <div class="col-sm-12 col-md-12">
-                                          <?php /*   <!--<div class="col-sm-3">-->
-                                        <aside class="sidebar" style="margin-top: 100px;">
-                                             <!-- WIDGET:CATEGORIES - START -->
-                                             <div id="search_box" class="panel panel-default">
-                                                  <form id="search_form" action="" method="get">
-
-                                                       <div class="panel-heading">
-                                                            <span class="glyphicon glyphicon-search"
-                                                                  style="color: green;"></span>
-                                                            <h3 class="panel-title"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-title') ?></h3>
-                                                       </div>
-
-                                                       <div class="panel-body">
-                                                            <p>
-                                                                 <label
-                                                                     for="prod_cats"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-cat-label') ?>
-                                                                      :</label>
-                                                                 <select class="form-control" name="prod_cats"
-                                                                         id="prod_cats">
-                                                                      <option
-                                                                          value=""><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-cat-placeholder') ?></option>
-                                                                      <option
-                                                                          value="all categories"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-cat-all-option') ?></option>
-
-
-                                                                      <?php
-
-                                                                      foreach ($cats as $cat) { ?>
-                                                                           <option
-                                                                               value="<?php echo "$cat[product_categories_id]"; ?>"><?php echo ucfirst($cat["product_categories_name_$lang"]); ?></option>
-                                                                           <?php
-                                                                      }
-                                                                      ?>
-                                                                 </select>
-                                                            </p>
-
-                                                            <p>
-                                                                 <label class="label-control"
-                                                                        for="search_keyword"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-keyword-label') ?>
-                                                                      :</label>
-                                                                 <input class="form-control" id="search_keyword"
-                                                                        type="text" name="search_keyword"
-                                                                        placeholder="<?= $langClass->translate($lang, 'register.php', 'sidebarsearch-keyword-placeholder') ?>"/>
-                                                            </p>
-
-                                                            <p>
-                                                                 <label class="label-control"
-                                                                        for="prod_loc"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-location-label') ?>
-                                                                      :</label>
-                                                                 <select class="form-control" name="prod_loc"
-                                                                         id="prod_loc">
-
-                                                                      <option
-                                                                          value=""><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-location-placeholder') ?></option>
-                                                                      <option
-                                                                          value="all towns"><?= $langClass->translate($lang, 'register.php', 'sidebarsearch-location-all-option') ?></option>
-
-
-                                                                      <?php
-                                                                      foreach ($locations as $loc) { ?>
-                                                                           <option
-                                                                               value="<?php echo "$loc[locations_id]"; ?>"><?php echo ucfirst("$loc[locations_town]"); ?></option>
-                                                                           <?php
-                                                                      } ?>
-                                                                 </select>
-                                                            </p>
-                                                       </div><!--END OF PANEL BODY-->
-                                                       <input type="hidden" name="sidebar_search" value=""/>
-                                                       <input type="hidden" name="page" value="searchController"/>
-                                                       <input type="hidden" name="action" value="sideBarSearch"/>
-
-                                                       <div class="panel-footer">
-                                                            <!--[if IE 7]><span
-                                                                class="button-ie7-wrapper secondary small  ">
-                                                            <![endif]-->
-                                                            <input class="btn btn-primary btn-sm" id="search_button"
-                                                                   type="submit" class="buttons green"
-                                                                   value="<?= $langClass->translate($lang, 'register.php', 'sidebarsearch-button') ?>"/>
-                                                            <!--[if IE 7]></span><![endif]-->
-                                                  </form>
-
-                                             </div><!--END OF SEARCH PANEL-->
-
-
-                                             <div style="background-color:#36BA4A;">
-                                                  <?php
-                                                  foreach ($cats as $cat)
-                                                  { ?>
-                                                  <a href="<?= $this->controller->settings->getFileRootPath() ?>ad/category?id=<?= $cat['product_categories_id'] ?>">
-                                                       <div class="text-center">
-                                                            <?php
-                                                            echo '<p style="color: white;font-size: 1.2em;font-weight: bolder">' . ucfirst($cat["product_categories_name_$lang"]) . '</p>';
-                                                            echo '</div></a>';
-                                                            echo '<hr style="color: white;" />';
-                                                            } ?>
-                                                       </div>
-                                        </aside>
-                                   </div>
-
-
-                                   <div class="col-sm-9"> */ ?>
                                           <?php
                                           if ((isset($_GET['tc'])) && ($_GET['tc'] == '0')) //user did not agree to the terms &conditions.
                                           {
@@ -314,9 +208,9 @@ $email = $_SESSION['postBack']['email'] ?? '';
                                                                       <input type="submit"
                                                                              class="btn btn-primary"
                                                                              value="Register"/>
-                                                                 </div><!--end of div holding form button(s)-->
-                                                            </div><!--end of panel footer-->
-                                                       </div><!--END OF PANEL-->
+                                                                 </div>
+                                                            </div>
+                                                       </div>
                                                   </form>
                                              </div>
                                         </article>
@@ -329,7 +223,6 @@ $email = $_SESSION['postBack']['email'] ?? '';
 <script src="assets/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
-    //make an ajax call-this calls the function 'checkUsername()' below
     $(document).on('blur', '#regis_form #username', function()
     {
         checkUsername(this);
@@ -337,12 +230,9 @@ $email = $_SESSION['postBack']['email'] ?? '';
 
 
     /**
-     * Code to get you started making ajax calls form your application.
-     * Create a controller called AuthController with a method checkUsername()
-     * You pass it a username from a form, and it calls the checkUsername() method
-     * The checkUsername() method checks in the DB if that username is already in use.
+     * Checks in the DB if that username is already in use.
      * It returns some text like 'username available' or 'username already taken' which you can display in a span
-     *      next to the username input field
+     *    next to the username input field
 
      * @param username
      */
@@ -353,7 +243,6 @@ $email = $_SESSION['postBack']['email'] ?? '';
         }
 
         params = "checkusername=" + username.value
-        /////params = ["username=" => username.value, "method" => "checkUsername"];
         request = new ajaxRequest()
         request.open("POST", "classes/adminController.php", true)
         request.setRequestHeader("Content-type",

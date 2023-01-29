@@ -220,185 +220,168 @@ class adminController  {
 
     public function register()
     {
-        $words = array('chokochohilarious', 'jammijamjim', 'tolambomanulo', 'kilabakula', 'jamborayla', 'kingkong', 'bayofbiscay', 'camprocol', 'tuxedo', 'camgas', 'manyolo', 'geomasso', 'ndipakem', 'nolimit', 'chopman', 'builders', 'jackstraw', 'colgate', 'jimreeves', 'popol', 'bamenda', 'buea', 'bafoussam', 'nkongsamba', 'ahidjo', 'douala', 'yaounde', 'bertoua', 'ebolowa', 'ngaoundere', 'maroua', 'foumban', 'bafang', 'lavoir', 'brancher', 'sicia', 'achana', 'francais', 'anglais', 'french', 'english', 'business', 'bosco', 'shokoloko', 'bangoshay', 'papou', 'wembley', 'hausa');
+        if ($this->config->getConfig()['allow_registration']) {
+            $words = array('chokochohilarious', 'jammijamjim', 'tolambomanulo', 'kilabakula', 'jamborayla', 'kingkong', 'bayofbiscay', 'camprocol', 'tuxedo', 'camgas', 'manyolo', 'geomasso', 'ndipakem', 'nolimit', 'chopman', 'builders', 'jackstraw', 'colgate', 'jimreeves', 'popol', 'bamenda', 'buea', 'bafoussam', 'nkongsamba', 'ahidjo', 'douala', 'yaounde', 'bertoua', 'ebolowa', 'ngaoundere', 'maroua', 'foumban', 'bafang', 'lavoir', 'brancher', 'sicia', 'achana', 'francais', 'anglais', 'french', 'english', 'business', 'bosco', 'shokoloko', 'bangoshay', 'papou', 'wembley', 'hausa');
 
-        $randomnumber = rand(0, 53);
-        $randword = rand() . rand(0, 32000);
-        $randCode = "$words[$randomnumber]" . "$randword";
-        $activationCode = md5(trim($randCode));
+            $randomnumber = rand(0, 53);
+            $randword = rand() . rand(0, 32000);
+            $randCode = "$words[$randomnumber]" . "$randword";
+            $activationCode = md5(trim($randCode));
 
-        $firstname = $surname = $username = $password = $phone = $email = $fail = $success = $error = $mailresult = false;
+            $firstname = $surname = $username = $password = $phone = $email = $fail = $success = $error = $mailresult = false;
 
-        $googleId = 'null';
-        if ((isset($_POST)) && ($_POST != '')) {
-            session_start();
-            $_SESSION['postBack'] = [];
+            $googleId = 'null';
+            if ((isset($_POST)) && ($_POST != '')) {
+                session_start();
+                $_SESSION['postBack'] = [];
 
-            $_SESSION['postBack']['first_name'] = $_POST['firstname'];
-            $_SESSION['postBack']['last_name'] = $_POST['surname'];
-            $_SESSION['postBack']['username'] = $_POST['username'];
-            $_SESSION['postBack']['contact_tel'] = $_POST['phone'];
-            $_SESSION['postBack']['email'] = $_POST['email'];
+                $_SESSION['postBack']['first_name'] = $_POST['firstname'];
+                $_SESSION['postBack']['last_name'] = $_POST['surname'];
+                $_SESSION['postBack']['username'] = $_POST['username'];
+                $_SESSION['postBack']['contact_tel'] = $_POST['phone'];
+                $_SESSION['postBack']['email'] = $_POST['email'];
 
-            //They must agree to our terms & conditions
-            if (!(isset($_POST['agreeToTerms'])))
-            {
-                header('Location: /register.php?tc=0');
-                exit();
-            }
-
-            //reject spam bots
-            if (isset($_POST['captcha_hidden']))
-            {
-                if (trim($_POST['captcha_hidden']) != '')
-                {
-                    header('Location: /register.php?st=0');
-                    exit();
-                }
-            }
-
-            if (isset($_POST['captcha_addition']) && ($_POST['captcha_addition'] != 4))
-            {
-                header('Location: /register.php?ca=0');
-                exit();
-            }
-
-            $user_type = "member";
-
-            $emailverified = "no";
-
-            //sanitize the submitted values
-            if (isset($_POST['firstname']))
-            {
-                $firstname = $this->validator->fix_string($_POST['firstname']);
-            }
-            if (isset($_POST['surname']))
-            {
-                $surname = $this->validator->fix_string($_POST['surname']);
-            }
-            if (isset($_POST['username']))
-            {
-                $username = $this->validator->fix_string($_POST['username']);
-            }
-            if (isset($_POST['pwd']))
-            {
-                $password = $this->validator->fix_string($_POST['pwd']);
-                $retyped = $this->validator->fix_string($_POST['conf_pwd']);
-            }
-
-            if (isset($_POST['phone']))
-            {
-                $phone = $this->validator->fix_string($_POST['phone']);
-            }
-
-            if (isset($_POST['email']))
-            {
-                $email = $this->validator->fix_string($_POST['email']);
-            }
-
-            //validate the submitted values
-            $fail  = $this->validator->validate_firstname($firstname);
-            $fail .= $this->validator->validate_surname($surname);
-            $fail .= $this->validator->validate_username($username);
-            $fail .= $this->validator->validate_password($password);
-            $fail .= $this->validator->validate_phonenumber($phone);
-            $fail .= $this->validator->validate_email($email);
-
-            if ($fail == "")
-            {
-                $checkPwd = new CheckPassword($password, 6);
-                //IF WE WANT TO MAKE THE PASSWORD STRONGER, WE WILL UNCOMMENT THE FOLLOWING 3 LINES SO THAT THE THE PW WILL ONLY BE
-                //ALLOWED IF IT HAS MIXED LETTER CASES, OR CONTAINS NUMBERS, OR CONTAINS SYMBOLS, OR CONTAINS ALL THE ABOVE, DEPENDING
-                //ON UR CHOICE
-                //$checkPwd->requireMixedCase();
-                //$checkPwd->requireNumbers(2);
-                //$checkPwd->requireSymbols();
-                $passwordOK = $checkPwd->check();
-                if (!$passwordOK)
-                {
-                    //$errors = array_merge($errors, $checkPwd->getErrors());
-                    //$fail .= array_merge($fail, $checkPwd->getErrors());
-                    foreach ($checkPwd->getErrors() as $error)
-                    {
-                        //$fail .= $fail . $checkPwd->getErrors(); THIS LINE LEAVES THE WORD 'ARRAY' IN THE VARIABLE $fail; To fix
-                        //the problem, THIS LOOP WILL EMPTY THE CONTENTS OF THE errors property (which is an array) as loose strings
-                        ////into $fail rather than the whole array itself. This is because if the whole array gets it, $fail will
-                        //still contain something even though it's empty, and the insertion into the database will not happen, as
-                        //$fail has to be empty (free of all errors for that to happen.
-
-                        $fail .= $error;
-                    }
-                }
-                if ($password != $retyped)
-                {
-                    header('Location: /register.php?pm=0');
+                //They must agree to our terms & conditions
+                if (!(isset($_POST['agreeToTerms']))) {
+                    header('Location: /register.php?tc=0');
                     exit();
                 }
 
-                if (!$fail) {
-                    $this->user->users_type = $user_type;
-                    $this->user->users_username = $username;
-                    $this->user->users_email = $email;
-                    $this->user->users_pass = $password;
-                    $this->user->users_first_name = $firstname;
-                    $this->user->users_last_name = $surname;
-                    $this->user->users_phone_number = $phone;
-                    $this->user->users_emailverified = $emailverified;
-                    $this->user->users_created = $this->user->timeNow();
-                    $this->user->users_eactivationcode = $activationCode;
-                    $saved = $this->user->save();
-
-                    if ($saved == 1062)
-                    {
-                        header('Location: /register.php?ee=1');
+                //reject spam bots
+                if (isset($_POST['captcha_hidden'])) {
+                    if (trim($_POST['captcha_hidden']) != '') {
+                        header('Location: /register.php?st=0');
                         exit();
                     }
-                    else if ($saved) {
-                        unset($_SESSION['postBack']);
+                }
 
-                        // Add your own subject below
-                        $subject = "Activate your account";
+                if (isset($_POST['captcha_addition']) && ($_POST['captcha_addition'] != 4)) {
+                    header('Location: /register.php?ca=0');
+                    exit();
+                }
 
-                        $appName = $this->config->getConfig()['appName'];
+                $user_type = "member";
 
-                        $message = "<h1>Congratulations</h1>
-                                    <h2>Your account has been created on ".$appName."</h2>
+                $emailverified = "no";
+
+                //sanitize the submitted values
+                if (isset($_POST['firstname'])) {
+                    $firstname = $this->validator->fix_string($_POST['firstname']);
+                }
+                if (isset($_POST['surname'])) {
+                    $surname = $this->validator->fix_string($_POST['surname']);
+                }
+                if (isset($_POST['username'])) {
+                    $username = $this->validator->fix_string($_POST['username']);
+                }
+                if (isset($_POST['pwd'])) {
+                    $password = $this->validator->fix_string($_POST['pwd']);
+                    $retyped = $this->validator->fix_string($_POST['conf_pwd']);
+                }
+
+                if (isset($_POST['phone'])) {
+                    $phone = $this->validator->fix_string($_POST['phone']);
+                }
+
+                if (isset($_POST['email'])) {
+                    $email = $this->validator->fix_string($_POST['email']);
+                }
+
+                //validate the submitted values
+                $fail = $this->validator->validate_firstname($firstname);
+                $fail .= $this->validator->validate_surname($surname);
+                $fail .= $this->validator->validate_username($username);
+                $fail .= $this->validator->validate_password($password);
+                $fail .= $this->validator->validate_phonenumber($phone);
+                $fail .= $this->validator->validate_email($email);
+
+                if ($fail == "") {
+                    $checkPwd = new CheckPassword($password, 6);
+                    //IF WE WANT TO MAKE THE PASSWORD STRONGER, WE WILL UNCOMMENT THE FOLLOWING 3 LINES SO THAT THE THE PW WILL ONLY BE
+                    //ALLOWED IF IT HAS MIXED LETTER CASES, OR CONTAINS NUMBERS, OR CONTAINS SYMBOLS, OR CONTAINS ALL THE ABOVE, DEPENDING
+                    //ON UR CHOICE
+                    //$checkPwd->requireMixedCase();
+                    //$checkPwd->requireNumbers(2);
+                    //$checkPwd->requireSymbols();
+                    $passwordOK = $checkPwd->check();
+                    if (!$passwordOK) {
+                        //$errors = array_merge($errors, $checkPwd->getErrors());
+                        //$fail .= array_merge($fail, $checkPwd->getErrors());
+                        foreach ($checkPwd->getErrors() as $error) {
+                            //$fail .= $fail . $checkPwd->getErrors(); THIS LINE LEAVES THE WORD 'ARRAY' IN THE VARIABLE $fail; To fix
+                            //the problem, THIS LOOP WILL EMPTY THE CONTENTS OF THE errors property (which is an array) as loose strings
+                            ////into $fail rather than the whole array itself. This is because if the whole array gets it, $fail will
+                            //still contain something even though it's empty, and the insertion into the database will not happen, as
+                            //$fail has to be empty (free of all errors for that to happen.
+
+                            $fail .= $error;
+                        }
+                    }
+                    if ($password != $retyped) {
+                        header('Location: /register.php?pm=0');
+                        exit();
+                    }
+
+                    if (!$fail) {
+                        $this->user->users_type = $user_type;
+                        $this->user->users_username = $username;
+                        $this->user->users_email = $email;
+                        $this->user->users_pass = $password;
+                        $this->user->users_first_name = $firstname;
+                        $this->user->users_last_name = $surname;
+                        $this->user->users_phone_number = $phone;
+                        $this->user->users_emailverified = $emailverified;
+                        $this->user->users_created = $this->user->timeNow();
+                        $this->user->users_eactivationcode = $activationCode;
+                        $saved = $this->user->save();
+
+                        if ($saved == 1062) {
+                            header('Location: /register.php?ee=1');
+                            exit();
+                        } else if ($saved) {
+                            unset($_SESSION['postBack']);
+
+                            // Add your own subject below
+                            $subject = "Activate your account";
+
+                            $appName = $this->config->getConfig()['appName'];
+
+                            $message = "<h1>Congratulations</h1>
+                                    <h2>Your account has been created on " . $appName . "</h2>
                                     <br />
 	                                <p>Click on this link to activate your account</p>
-                                    <p><a href='".$this->config->getConfig()['appURL']."classes/adminController.php?verifyEmail=1&em=".$activationCode."'>Activate account</a> 
+                                    <p><a href='" . $this->config->getConfig()['appURL'] . "classes/adminController.php?verifyEmail=1&em=" . $activationCode . "'>Activate account</a> 
                                     If the above link does not work, copy and paste this in your browser:</p>
-                                    <p>".$this->config->getConfig()['appURL']."adminController.php?verifyEmail=1&em=".$activationCode."</p>
+                                    <p>" . $this->config->getConfig()['appURL'] . "adminController.php?verifyEmail=1&em=" . $activationCode . "</p>
                                     <br />
                                     
-                                    <p><img width='100' height='100' src='".$this->config->getConfig()['appURL']."assets/images/logos/logo.svg' /></p>";
+                                    <p><img width='100' height='100' src='" . $this->config->getConfig()['appURL'] . "assets/images/logos/logo.svg' /></p>";
 
-                        $this->messenger->sendEmailActivationEmail($username, $email, $subject, $message);
-                        $_SESSION['activationCode'] = $activationCode;
+                            $this->messenger->sendEmailActivationEmail($username, $email, $subject, $message);
+                            $_SESSION['activationCode'] = $activationCode;
 
-                        header('Location: /index.php?rs=1');
-                        exit();
-                    }
-                    else
-                    {
+                            header('Location: /index.php?rs=1');
+                            exit();
+                        } else {
+                            header('Location: /register.php?rs=0');
+                            exit();
+                        }
+                    } else {
                         header('Location: /register.php?rs=0');
                         exit();
                     }
-                }
-                else
-                {
+                } else {
                     header('Location: /register.php?rs=0');
                     exit();
                 }
-            }
-            else
-            {
-                header('Location: /register.php?rs=0');
+            } else {
+                header('Location: /register.php?fe=1');
                 exit();
             }
         }
         else
         {
-            header('Location: /register.php?fe=1');
+            header('Location: /index.php?ra=0');
             exit();
         }
     }

@@ -36,6 +36,12 @@ session_start();
                     Your registration was successful
                   </p>";
         }
+        if ((isset($_GET['ra'])) && ($_GET['ra'] == '0')) //registration not allowed.
+        {
+            echo "<p style='color: red; background-color: white;font-weight:bold;margin-left:30%;'>
+                    Sorry! User registration is not allowed
+                  </p>";
+        }
         ?>
 		<h2>Welcome to your user manager</h2>
 		<p>Manage your users' account details</p>
