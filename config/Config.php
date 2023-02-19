@@ -27,8 +27,7 @@ class Config
             'localDBcredentials' => [
                 'username' => 'php_docker',
                 'pwd' => 'password',
-                //'db' => 'userManager', # MUST be same as Dockerfile db service
-                'db' => 'housing', # MUST be same as Dockerfile db service
+                'db' => 'user_manager', # MUST be same as what is specified in the Dockerfile db service
                 'host' => 'db',
                 'key' => 'takeThisWith@PinchOfSalt'
             ],
