@@ -15,6 +15,9 @@
       querying the DB in various ways to get data; all protected 
       against SQL injection by the use of prepared statements. 
     * Docker environment with configured docker-compose.yml file
+    
+    * It comes with two users to pre-insert into the DB. One is an admin user, & the other 
+      is a regular member to get you started. The password for both users is 1234567 
 
 ### Use Case
     It could make a great starting point for any PHP & MySQL 
